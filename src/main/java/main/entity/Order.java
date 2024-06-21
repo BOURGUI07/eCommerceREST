@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package main.entity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,9 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.util.List;
 /**
  *
@@ -41,32 +38,19 @@ public class Order {
         this.user = user;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public Order(LocalDate date) {
-        this.date = date;
-    }
 
     public Order() {
     }
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name="order_id")
     private Integer id;
     
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
     
-    @Column(name="created_at")
-    private LocalDate date;
     
     
     @ManyToMany()

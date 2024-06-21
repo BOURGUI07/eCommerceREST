@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -24,12 +23,11 @@ import java.util.List;
 @Table(name="product")
 public class Product {
 
-    public Product(String name, String desc, double price, int stock, LocalDate date) {
+    public Product(String name, String desc, double price, int stock) {
         this.name = name;
         this.desc = desc;
         this.price = price;
         this.stock = stock;
-        this.date = date;
     }
 
     public Product() {
@@ -75,13 +73,6 @@ public class Product {
         this.stock = stock;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 
     public Category getCategory() {
         return category;
@@ -107,8 +98,6 @@ public class Product {
     @Column(name="product_stock")
     private int stock;
     
-    @Column(name="created_at")
-    private LocalDate date;
     
     @ManyToOne
     @JoinColumn(name="category_id")

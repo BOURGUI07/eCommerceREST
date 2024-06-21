@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,13 +48,6 @@ public class User {
         this.name = name;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 
     public Profile getProfile() {
         return profile;
@@ -65,9 +57,8 @@ public class User {
         this.profile = profile;
     }
 
-    public User(String name, LocalDate date) {
+    public User(String name) {
         this.name = name;
-        this.date = date;
     }
 
     public User() {
@@ -81,8 +72,6 @@ public class User {
     @Column(name="user_name")
     private String name;
     
-    @Column(name="created_at")
-    private LocalDate date;
     
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="profile_id")
