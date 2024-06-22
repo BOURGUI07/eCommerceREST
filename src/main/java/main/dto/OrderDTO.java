@@ -13,11 +13,11 @@ import java.util.List;
 public class OrderDTO {
 
     public List<Integer> getProductsId() {
-        return productsId;
+        return orderDetailIds;
     }
 
     public void setProductsId(List<Integer> productsId) {
-        this.productsId = productsId;
+        this.orderDetailIds = productsId;
     }
 
     public Integer getId() {
@@ -40,5 +40,7 @@ public class OrderDTO {
     }
     private Integer id;
     private Integer userId;
-    private List<Integer> productsId;
+    private List<Integer> orderDetailIds;
+    
+    
 }

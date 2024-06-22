@@ -87,4 +87,8 @@ public class User {
         orders.add(order);
         order.setUser(this);
     }
+    
+    public void removeOrder(Order o){
+        this.orders.remove(o);
+    }
 }

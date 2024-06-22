@@ -10,9 +10,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,14 @@ import java.util.List;
 @Entity
 @Table(name="product")
 public class Product {
+
+    public List<OrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
 
     public Product(String name, String desc, double price, int stock) {
         this.name = name;
@@ -103,6 +112,18 @@ public class Product {
     @JoinColumn(name="category_id")
     private Category category;
     
-    @ManyToMany(mappedBy="products")
-    private List<Order> orders;
+    @OneToMany(mappedBy="product")
+    private List<OrderDetails> orderDetails;
+    
+    public void addOrderDetail(OrderDetails o){
+        if(this.orderDetails==null){
+            orderDetails = new ArrayList<>();
+        }
+        this.orderDetails.add(o);
+        o.setProduct(this);
+    }
+    
+    public void removeOrderDetail(OrderDetails o){
+        this.orderDetails.remove(o);
+    }
 }
