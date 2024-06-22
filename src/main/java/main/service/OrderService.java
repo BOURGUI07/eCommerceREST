@@ -44,6 +44,14 @@ public class OrderService {
         return this.orderRepo.findAll();
     }
     
+    public List<OrderDetails> getAllOrderDetails(){
+        return this.detailRepo.findAll();
+    }
+    
+    public OrderDetails getDetail(Integer orderID, Integer productID){
+        return this.detailRepo.findById(new OrderDetailsId(orderID,productID)).orElseThrow();
+    }
+    
     @Transactional
     public Order createOrder(Integer userID, OrderDetailsDTO x){
         var order = new Order();
