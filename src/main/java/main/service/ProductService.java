@@ -4,6 +4,8 @@
  */
 package main.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import main.dto.CategoryDTO;
@@ -22,6 +24,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProductService {
+    @PersistenceContext
+    private EntityManager em;
+    
     @Autowired
     public ProductService(CategoryRepo categoryRepo, ProductRepo productRepo) {
         this.categoryRepo = categoryRepo;
@@ -124,4 +129,31 @@ public class ProductService {
         this.categoryRepo.save(categ);
         return x;
     }
+    
+    //Find all products in a specific category
+   public List<Product> productsWithSpecificCategory(String categoryName){
+       String query = "SELECT p.product_id, p.product_name FROM product p JOIN category c ON(p.category_id=c.category_id) WHERE c.category_name= :category";
+       return this.em.createNativeQuery(query, Product.class).setParameter("category",categoryName ).getResultList();
+   }
+   
+   //Get the list of products along with their categories
+   public List<Object[]> productsWithTheirCategoies(){
+       String query = "SELECT p.product_id, p.product_name, c.category_name FROM product p JOIN category c ON(p.category_id=c.category_id)";
+       return this.em.createNativeQuery(query).getResultList();
+   }
+   
+   //Determine which products are out of stock.
+   public List<Object[]> productsLowerThanValue(int value){
+      var query = "SELECT product_id, product_name FROM product WHERE product_stock< :stock";
+      return this.em.createNativeQuery(query).setParameter("stock", value).getResultList();
+   }
+   
+   //List all categories and the number of products in each.
+   public List<Object[]> categoriesAndNumberOfProducts(){
+       var query = "SELECT c.category_name, COUNT(p.product-name) num_products FROM product p JOIN category c ON(p.category_id=c.category_id) GROUP BY c.category_name";
+       return this.em.createNativeQuery(query).getResultList();
+   }
+   
+   
+   
 }

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 public class RessourceExceptionHandler {
-    @ExceptionHandler
+    @ExceptionHandler(RessourceNotFoundException.class)
     public ResponseEntity<RessourceError> handleException(RessourceNotFoundException e){
         var error = new RessourceError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
     
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<RessourceError> handleException1(Exception e){
         var error = new RessourceError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);

@@ -4,6 +4,8 @@
  */
 package main.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.function.Supplier;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrderService {
+    @PersistenceContext
+    private EntityManager em;
     
     @Autowired
     public OrderService(OrderRepo orderRepo, ProductRepo productRepo, UserRepo userRepo, OrderDetailRepo detailRepo) {
@@ -83,5 +87,29 @@ public class OrderService {
         var user = order.getUser();
         user.removeOrder(order);
         this.orderRepo.delete(order);
+    }
+    
+    //Find users who have placed orders.
+    public List<Object[]> usersWhoPlacedOrders(){
+        String query = "SELECT DISTINCT u.user_id, u.user_name, o.order_id FROM user u JOIN orders o ON(u.user_id=o.user_id)";
+        return this.em.createNativeQuery(query).getResultList();
+    }
+    
+    //Count how many orders each user has placed.
+    public List<Object[]> countOrdersForUsers(){
+        String query = "SELECT user_id, order_id, COUNT(order_id) num_of_orders FROM orders GROUP BY user_id";
+        return this.em.createNativeQuery(query).getResultList();
+    }
+    
+    //Find orders that contain a specific product
+    public List<Integer> ordersThatContainsProduct(String productName){
+        var query = "SELECT d.order_id FROM product p JOIN orders_items d ON(d.product_id=p.product_id) WHERE p.product_name= :name";
+        return this.em.createNativeQuery(query, Integer.class).setParameter("name", productName).getResultList();
+    }
+    
+    //Identify the top-selling products (by quantity).
+    public List<Object[]> topSellingProductsByQuantity(){
+        var query = "SELECT p.product_name, SUM(d.quantity) sum_quantity FROM product p JOIN orders_items d ON(p.product_id=d.product_id) GROUP BY p.product_name ORDER BY sum_quantity DESC LIMIT 10";
+        return this.em.createNativeQuery(query).getResultList();
     }
 }

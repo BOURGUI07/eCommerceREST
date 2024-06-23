@@ -4,10 +4,13 @@
  */
 package main.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import main.dto.ProfileDTO;
 import main.dto.UserDTO;
+import main.entity.Product;
 import main.entity.Profile;
 import main.entity.User;
 import main.handler.RessourceNotFoundException;
@@ -25,6 +28,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
    private UserRepo userRepo;
    private ProfileRepo profileRepo;
+   @PersistenceContext
+   private EntityManager em;
    
    @Autowired
    public UserService(UserRepo u, ProfileRepo p){
@@ -101,4 +106,14 @@ public class UserService {
    public List<Profile> getAllProfiles(){
        return this.profileRepo.findAll();
    }
+   
+   //Retrieve all users with their profiles.
+   public List<Object[]> usersWithTheirProfiles(){
+       String query = "SELECT user.user_id, user.user_name, profile.address, profile.email, profile.phone FROM user JOIN profile ON(profile_id=profile_id)";
+       return this.em.createNativeQuery(query).getResultList();
+   }
+   
+   
+   
+   
 }
