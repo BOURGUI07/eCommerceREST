@@ -70,16 +70,16 @@ public class OrderService {
     }
     
     
+    
     @Transactional
-    public void deleteOrder(Integer userID, Integer orderID, Integer productID){
+    public void removeOrder(Integer orderID){
         var order = this.orderRepo.findById(orderID).orElseThrow();
-        var detail = this.detailRepo.findById(new OrderDetailsId(orderID, productID)).orElseThrow();
-        var product = this.productRepo.findById(productID).orElseThrow();
+        for(var d:order.getOrderdetails()){
+            order.removeOrderDetail(d);          
+            this.detailRepo.delete(d);
+        }
         var user = order.getUser();
-        order.removeOrderDetail(detail);
-        product.removeOrderDetail(detail);
         user.removeOrder(order);
-        this.detailRepo.delete(detail);
         this.orderRepo.delete(order);
     }
 }

@@ -6,6 +6,7 @@ package main.service;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
+import main.dto.ProfileDTO;
 import main.dto.UserDTO;
 import main.entity.Profile;
 import main.entity.User;
@@ -44,6 +45,17 @@ public class UserService {
        return x;
    }
    
+   @Transactional
+   public ProfileDTO createProfile(ProfileDTO x){
+       var profile = new Profile();
+       profile.setAddress(x.getAddress());
+       profile.setEmail(x.getEmail());
+       profile.setPhone(x.getPhone());
+       this.profileRepo.save(profile);
+       x.setId(profile.getId());
+       return x;
+   }
+   
    public UserDTO findUserById(Integer id){
        var user = this.userRepo.findById(id).orElseThrow();
        var x = new UserDTO();
@@ -55,6 +67,16 @@ public class UserService {
        return x;
    }
    
+   public ProfileDTO findProfileById(Integer id){
+       var profile = this.profileRepo.findById(id).orElseThrow();
+       var x = new ProfileDTO();
+       x.setId(profile.getId());
+       x.setAddress(profile.getAddress());
+       x.setEmail(profile.getEmail());
+       x.setPhone(profile.getPhone());
+       return x;
+   }
+   
    @Transactional
    public UserDTO updateUser(Integer id, UserDTO x){
        var user = this.userRepo.findById(id).orElseThrow();
@@ -63,6 +85,8 @@ public class UserService {
        this.userRepo.save(user);
        return x;
    }
+   
+   
    
    @Transactional
    public void deleteUser(Integer id){
