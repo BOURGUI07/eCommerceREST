@@ -8,6 +8,7 @@ import java.util.List;
 import main.dto.OrderDetailsDTO;
 import main.entity.Order;
 import main.entity.OrderDetails;
+import main.handler.RessourceNotFoundException;
 import main.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,16 +35,25 @@ public class OrderController {
     
     @PostMapping("/orders/create/{userID}")
     public Order createOrder(@PathVariable Integer userID, @RequestBody OrderDetailsDTO x){
+        if(userID<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.createOrder(userID, x);
     }
     
     @GetMapping("/orders/{x}")
     public Order getOrder(@PathVariable Integer x){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.findOrderById(x);
     }
     
     @GetMapping("/details/{orderID}/{productID}")
     public OrderDetails getOrderDetail(@PathVariable Integer orderID, @PathVariable Integer productID){
+        if(orderID<0 || productID<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.getDetail(orderID, productID);
     }
     
@@ -59,6 +69,9 @@ public class OrderController {
     
     @DeleteMapping("/orders/delete/{x}")
     public void deleteOrder(@PathVariable Integer x){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         this.service.removeOrder(x);
     }
     

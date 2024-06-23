@@ -6,10 +6,12 @@ package main.service;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.function.Supplier;
 import main.dto.OrderDetailsDTO;
 import main.entity.Order;
 import main.entity.OrderDetails;
 import main.entity.OrderDetailsId;
+import main.handler.RessourceNotFoundException;
 import main.repo.OrderDetailRepo;
 import main.repo.OrderRepo;
 import main.repo.ProductRepo;
@@ -37,7 +39,7 @@ public class OrderService {
     private OrderDetailRepo detailRepo;
     
     public Order findOrderById(Integer id){
-        return this.orderRepo.findById(id).orElseThrow();
+        return this.orderRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Order with id: " + id + " wasn't found"));
     }
     
     public List<Order> getAllOrders(){
@@ -49,17 +51,17 @@ public class OrderService {
     }
     
     public OrderDetails getDetail(Integer orderID, Integer productID){
-        return this.detailRepo.findById(new OrderDetailsId(orderID,productID)).orElseThrow();
+        return this.detailRepo.findById(new OrderDetailsId(orderID,productID)).orElseThrow(() -> new RessourceNotFoundException("Detail with ids: " + productID + ", " + orderID + " wasn't found"));
     }
     
     @Transactional
     public Order createOrder(Integer userID, OrderDetailsDTO x){
         var order = new Order();
-        var user = this.userRepo.findById(userID).orElseThrow();
+        var user = this.userRepo.findById(userID).orElseThrow(() -> new RessourceNotFoundException("User with id: " + userID + " wasn't found"));
         user.add(order);
         var detail = new OrderDetails();
         detail.setOrder(order);
-        var product = this.productRepo.findById(x.getProductId()).orElseThrow();
+        var product = this.productRepo.findById(x.getProductId()).orElseThrow(() -> new RessourceNotFoundException("Product with id: OrderDetailsDTO.getProductId() wasn't found"));
         detail.setProduct(product);
         detail.setId(new OrderDetailsId(order.getId(), product.getId()));
         product.addOrderDetail(detail);
@@ -73,7 +75,7 @@ public class OrderService {
     
     @Transactional
     public void removeOrder(Integer orderID){
-        var order = this.orderRepo.findById(orderID).orElseThrow();
+        var order = this.orderRepo.findById(orderID).orElseThrow(() -> new RessourceNotFoundException("Order with id: " + orderID + " wasn't found"));
         for(var d:order.getOrderdetails()){
             order.removeOrderDetail(d);          
             this.detailRepo.delete(d);

@@ -9,6 +9,7 @@ import main.dto.CategoryDTO;
 import main.dto.ProductDTO;
 import main.entity.Category;
 import main.entity.Product;
+import main.handler.RessourceNotFoundException;
 import main.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,11 +46,17 @@ public class ProductController {
     
     @GetMapping("/categories/{x}")
     public CategoryDTO getCategory(@PathVariable Integer x){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.findCategory(x);
     }
     
     @GetMapping("/products/{x}")
     public ProductDTO getProduct(@PathVariable Integer x){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.findProduct(x);
     }
     
@@ -65,21 +72,33 @@ public class ProductController {
     }
     @PutMapping("/categories/update/{x}")
     public CategoryDTO updateCateg(@PathVariable Integer x, @RequestBody CategoryDTO y){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.updateCategory(x, y);
     }
     
     @PutMapping("/products/update/{x}")
     public ProductDTO updateProduct(@PathVariable Integer x, @RequestBody ProductDTO y){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.updateProduct(x, y);
     }
     
     @DeleteMapping("/categories/delete/{x}")
     public void deleteCateg(@PathVariable Integer x){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         this.service.deleteCategory(x);
     }
     
     @DeleteMapping("/products/delete/{x}")
     public void deleteProduct(@PathVariable Integer x){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         this.service.deleteProduct(x);
     }
     

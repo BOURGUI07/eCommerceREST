@@ -10,6 +10,7 @@ import main.dto.ProfileDTO;
 import main.dto.UserDTO;
 import main.entity.Profile;
 import main.entity.User;
+import main.handler.RessourceNotFoundException;
 import main.repo.ProfileRepo;
 import main.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class UserService {
        user.setName(x.getName());
        
        if(x.getProfileId()!=null){
-           var profile = this.profileRepo.findById(x.getProfileId()).orElseThrow();
+           var profile = this.profileRepo.findById(x.getProfileId()).orElseThrow(() -> new RessourceNotFoundException("Profile with id: UserDTO.getProfileId() wasn't found"));
            user.setProfile(profile);
        }
        x.setId(user.getId());
@@ -57,7 +58,7 @@ public class UserService {
    }
    
    public UserDTO findUserById(Integer id){
-       var user = this.userRepo.findById(id).orElseThrow();
+       var user = this.userRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("User with id: " + id + " wasn't found"));
        var x = new UserDTO();
        x.setId(user.getId());
        x.setName(user.getName());
@@ -68,7 +69,7 @@ public class UserService {
    }
    
    public ProfileDTO findProfileById(Integer id){
-       var profile = this.profileRepo.findById(id).orElseThrow();
+       var profile = this.profileRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Profile with id: " + id + " wasn't found"));
        var x = new ProfileDTO();
        x.setId(profile.getId());
        x.setAddress(profile.getAddress());
@@ -79,9 +80,9 @@ public class UserService {
    
    @Transactional
    public UserDTO updateUser(Integer id, UserDTO x){
-       var user = this.userRepo.findById(id).orElseThrow();
+       var user = this.userRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("User with id: " + id + " wasn't found"));
        user.setName(x.getName());
-       user.setProfile(this.profileRepo.findById(x.getProfileId()).orElseThrow());
+       user.setProfile(this.profileRepo.findById(x.getProfileId()).orElseThrow(() -> new RessourceNotFoundException("Profile with id: UserDTO.getProfileId() wasn't found")));
        this.userRepo.save(user);
        return x;
    }

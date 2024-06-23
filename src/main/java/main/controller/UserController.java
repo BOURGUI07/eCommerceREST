@@ -9,6 +9,7 @@ import main.dto.ProfileDTO;
 import main.dto.UserDTO;
 import main.entity.Profile;
 import main.entity.User;
+import main.handler.RessourceNotFoundException;
 import main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,21 +56,33 @@ public class UserController {
     
     @GetMapping("/users/{userID}")
     public UserDTO getUser(@PathVariable Integer userID){
+        if(userID<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.findUserById(userID);
     }
     
     @GetMapping("/profiles/{profileID}")
     public ProfileDTO getProfile(@PathVariable Integer profileID){
+        if(profileID<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.findProfileById(profileID);
     }
     
     @PutMapping("/users/update/{userID}")
     public UserDTO updateUser(@PathVariable Integer userID, @RequestBody UserDTO x){
+        if(userID<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         return this.service.updateUser(userID, x);
     }
     
     @DeleteMapping("/users/delete/{x}")
     public void deleteUser(@PathVariable Integer x){
+        if(x<0){
+            throw new RessourceNotFoundException("Ressource not found");
+        }
         this.service.deleteUser(x);
     }
     
