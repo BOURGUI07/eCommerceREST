@@ -3,14 +3,14 @@
 #### Overview
 As a client, I require a RESTful service for managing an e-commerce platform. The service should be developed using MySQL as the database and Spring Boot for the backend. The system must support complex entity relationships and enable advanced querying capabilities.
 
-#### Technologies Used
-	**Spring Boot**: For application configuration and setup.
-	**Spring Web**: To define REST endpoints.
-	**Spring Data JPA**: For database interactions.
-	**Spring Security**: To handle authentication and authorization.
-	**MySQL**: For the relational database management system.
-	**Maven**: For managing project dependencies.
-	**Postman**: For testing the API endpoints.
+## Technologies Used
+	- **Spring Boot**: For application configuration and setup.
+	- **Spring Web**: To define REST endpoints.
+	- **Spring Data JPA**: For database interactions.
+	- **Spring Security**: To handle authentication and authorization.
+	- **MySQL**: For the relational database management system.
+	- **Maven**: For managing project dependencies.
+	- **Postman**: For testing the API endpoints.
 
 #### Entities and Relationships
 
