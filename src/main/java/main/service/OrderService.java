@@ -112,4 +112,46 @@ public class OrderService {
         var query = "SELECT p.product_name, SUM(d.quantity) sum_quantity FROM product p JOIN orders_items d ON(p.product_id=d.product_id) GROUP BY p.product_name ORDER BY sum_quantity DESC LIMIT 10";
         return this.em.createNativeQuery(query).getResultList();
     }
+    
+    //Find users who have not placed any orders:
+    public List<Object[]> usersWhoHaven_tPlacedAnyOrders(){
+        String query = "SELECT u.user_id, u.user_name FROM user u LEFT JOIN orders o ON (u.user_id=o.user_id) WHERE o.order_id IS NULL";
+        return this.em.createNativeQuery(query).getResultList();
+    }
+    
+    //List all products with their respective category names and the number of times each product has been ordered:
+    public List<Object[]> numberOfTimesEachProductHasBeenOrdered(){
+        String query = "SELECT p.product_id, p.product_name, c.category_name, COALESCE(SUM(d.quantity),0) num_of_times FROM product p JOIN category c ON (p.category_id=c.category_id) LEFT JOIN orders_items d ON (p.product_id=d.product_id) GROUP BY p.product_id, p.product_name, c.category_name ORDER BY num_of_times DESC";
+        return this.em.createNativeQuery(query).getResultList();
+    }
+    
+    //Find the most popular product (the product ordered the most times).
+    public List<Object[]> mostPopularProduct(){
+        var query = "SELECT p.product_id, p.product_name, SUM(d.quantity) FROM product p JOIN orders_items d ON(p.product_id=d.product_id) GROUP BY p.product_id, p.product_name ORDER BY SUM(d.quantity) DESC LIMIT 1";
+        return this.em.createNativeQuery(query).getResultList();
+    }
+    
+    //Get a list of users along with the total number of products they have ordered, including users who haven't placed any orders.
+    public List<Object[]> usersWithTotalOrderedProducts(){
+        var query = "SELECT u.user_id, u.user_name, COALESCE(SUM(d.quanity),0) total FROM users u LEFT JOIN orders o ON(u.user_id=o.user_id) LEFT JOIN orders_items d ON (o.order_id=d.order_id) GROUP BY u.user_id, u.user_name ORDER BY total DESC";
+        return this.em.createNativeQuery(query).getResultList();
+    }
+    
+    //Get the average number of products per order.
+    public List<Object[]> avgProductsPerOrder(){
+        var q = "SELECT order_id, AVG(quantity) avg FROM orders_items GROUP BY order_id ORDER BY avg DESC";
+        return this.em.createNativeQuery(q).getResultList();
+    }
+    
+    //Find the category with the highest total sales (sum of price * quantity for all products in that category).
+    public List<Object[]> categoryWithHighestSales(){
+        var q = "SELECT c.category_id, c.category_name, SUM(p.product_price*d.quantity) total_sales FROM product p JOIN category c JOIN orders_items d ON (p.product_id=d.product_id AND c.category_id=p.category_id) GROUP BY c.category_id, c.category_name ORDER BY total_sales DESC LIMIT 1";
+        return this.em.createNativeQuery(q).getResultList();
+    }
+    
+    //Retrieve the list of users along with their profile information and the total number of orders they have placed.
+    public List<Object[]> usersWithNumOrders(){
+        var q = "SELECT u.user_id, u.user_name, p.address, p.email, p.phone, COUNT(o.order_id) num_orders FROM user u JOIN profile p JOIN orders o ON(u.profile_id=p.profile_id AND u.user_id=o.user_id) GROUP BY u.user_id, u.user_name, p.address, p.email, p.phone ORDER BY num_orders DESC";
+        return this.em.createNativeQuery(q).getResultList();
+    }
 }
