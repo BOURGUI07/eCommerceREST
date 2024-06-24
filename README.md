@@ -117,15 +117,8 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
         - `MANAGE_PRODUCTS`
         - `VIEW_ORDERS`
 
-3. **Customer**
-    - Description: Customers can view and purchase products. They have access to their own profile and orders but cannot manage products or other users.
-    - Authorities:
-        - `VIEW_PRODUCTS`
-        - `MANAGE_OWN_PROFILE`
-        - `PLACE_ORDERS`
-        - `VIEW_OWN_ORDERS`
 
-4. **Guest**
+3. **Guest**
     - Description: Guests can browse products and view limited information. They must register to place orders or view detailed product information.
     - Authorities:
         - `VIEW_PRODUCTS`
@@ -160,17 +153,6 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
     - Description: Allows the role to view product information.
     - Applicable Roles: Admin, Vendor, Customer, Guest
 
-8. **MANAGE_OWN_PROFILE**
-    - Description: Allows the role to update their own user profile information.
-    - Applicable Roles: Customer
-
-9. **PLACE_ORDERS**
-    - Description: Allows the role to place new orders for products.
-    - Applicable Roles: Customer
-
-10. **VIEW_OWN_ORDERS**
-    - Description: Allows the role to view their own order history and details.
-    - Applicable Roles: Customer
 
 #### Role-Based Access Control (RBAC)
 
@@ -178,8 +160,6 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
     - Full access to all endpoints and functionalities.
 - **Vendor**
     - Access to endpoints related to product management and order viewing.
-- **Customer**
-    - Access to endpoints for viewing products, managing their own profile, placing orders, and viewing their own order history.
 - **Guest**
     - Access to endpoints for viewing products only. Registration is required for further access.
 
