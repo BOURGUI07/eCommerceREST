@@ -167,4 +167,4 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
 
 - **Endpoint Protection**: Ensure that endpoints are protected using Spring Security to enforce role-based access control.
 - **Token-Based Authentication**: Implement JWT (JSON Web Token) for secure and stateless authentication.
-- **Role Hierarchies**: Consider defining role hierarchies in Spring Security to simplify the assignment of authorities (e.g., `Admin` implicitly has all authorities granted to `Vendor` and `Customer`).
+- **Role Hierarchies**: Consider defining role hierarchies in Spring Security to simplify the assignment of authorities (e.g., `Admin` implicitly has all authorities granted to `Vendor`).
