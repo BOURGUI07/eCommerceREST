@@ -20,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 public class SecurityConfig {
+    
     /* 
     USE `ecommerce`;
 
@@ -69,6 +70,7 @@ VALUES
 ('sara','ROLE_VENDOR'),
 ('youness','ROLE_ADMIN')
     */
+    
     @Bean
     public UserDetailsManager userDetailsManager(DataSource datasource){
         return new JdbcUserDetailsManager(datasource);

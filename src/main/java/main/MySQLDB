@@ -1,0 +1,59 @@
+-- Drop database if exists and create it
+DROP DATABASE IF EXISTS ecommerce;
+CREATE DATABASE ecommerce;
+USE ecommerce;
+
+-- Create tables in correct order
+DROP TABLE IF EXISTS profile;
+CREATE TABLE profile (
+    profile_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    address VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(100) DEFAULT NULL
+);
+
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
+    user_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(50) NOT NULL,
+    profile_id INTEGER NOT NULL,
+    FOREIGN KEY (profile_id) REFERENCES profile(profile_id)
+);
+
+DROP TABLE IF EXISTS category;
+CREATE TABLE category (
+    category_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL,
+    category_desc VARCHAR(100) DEFAULT NULL
+);
+
+DROP TABLE IF EXISTS product;
+CREATE TABLE product (
+    product_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    product_desc VARCHAR(200) NOT NULL,
+    product_price DECIMAL(10,2) NOT NULL,
+    product_stock INT NOT NULL,
+    category_id integer not null,
+    foreign key (category_id) references category(category_id)
+);
+
+
+
+
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders (
+    order_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+DROP TABLE IF EXISTS orders_items;
+CREATE TABLE orders_items (
+    order_id INTEGER,
+    product_id INTEGER,
+    quantity INT NOT NULL,
+    PRIMARY KEY (order_id, product_id),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES product(product_id)
+);
