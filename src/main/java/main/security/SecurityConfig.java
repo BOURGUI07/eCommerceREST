@@ -20,6 +20,55 @@ import org.springframework.security.web.SecurityFilterChain;
  */
 @Configuration
 public class SecurityConfig {
+    /* 
+    USE `ecommerce`;
+
+DROP TABLE IF EXISTS `authorities`;
+DROP TABLE IF EXISTS `users`;
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `username` varchar(50) NOT NULL,
+  `password` varchar(68) NOT NULL,
+  `enabled` tinyint NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Inserting data for table `users`
+--
+
+INSERT INTO `users` 
+VALUES 
+('yassine','{bcrypt}$2a$10$Na7.uPg0ceL/Ut6tfzl3VusGYtCoJ89oBH63wMoFu1B0TmzWOtjoa',1),
+('sara','{bcrypt}$2a$10$RhAgTjOFJJC8aLLLGZ1AmO3RK3J5loX/y/rAbvFFdqhXRI36xr69O',1),
+('youness','{bcrypt}$2a$10$wXzdZtu6fEN7VOa2PHpHq.dwK7y0kOaQGUpk74GPBH43uZMT5wxrm',1);
+
+
+--
+-- Table structure for table `authorities`
+--
+
+CREATE TABLE `authorities` (
+  `username` varchar(50) NOT NULL,
+  `authority` varchar(50) NOT NULL,
+  UNIQUE KEY `authorities_idx_1` (`username`,`authority`),
+  CONSTRAINT `authorities_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Inserting data for table `authorities`
+--
+
+INSERT INTO `authorities` 
+VALUES 
+('yassine','ROLE_GUEST'),
+('sara','ROLE_VENDOR'),
+('youness','ROLE_ADMIN')
+    */
     @Bean
     public UserDetailsManager userDetailsManager(DataSource datasource){
         return new JdbcUserDetailsManager(datasource);
