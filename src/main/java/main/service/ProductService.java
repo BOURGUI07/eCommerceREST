@@ -24,13 +24,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProductService {
-    @PersistenceContext
     private EntityManager em;
     
     @Autowired
-    public ProductService(CategoryRepo categoryRepo, ProductRepo productRepo) {
+    public ProductService(CategoryRepo categoryRepo, ProductRepo productRepo, EntityManager em) {
         this.categoryRepo = categoryRepo;
         this.productRepo = productRepo;
+        this.em=em;
     }
     private CategoryRepo categoryRepo;
     private ProductRepo productRepo;

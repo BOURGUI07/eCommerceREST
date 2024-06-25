@@ -50,4 +50,8 @@ public class UserDTO {
     private String name;
     private Integer profileId;
     private List<Integer> ordersId;
+    
+    public void addOrderID(Integer orderID){
+        this.ordersId.add(orderID);
+    }
 }

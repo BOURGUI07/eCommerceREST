@@ -45,12 +45,12 @@ public class UserController {
     }
     
     @GetMapping("/users")
-    public List<User> getAllUsers(){
+    public List<UserDTO> getAllUsers(){
         return this.service.getAllUsers();
     }
     
     @GetMapping("/profiles")
-    public List<Profile> getAllProfiles(){
+    public List<ProfileDTO> getAllProfiles(){
         return this.service.getAllProfiles();
     }
     

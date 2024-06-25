@@ -27,16 +27,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrderService {
-    @PersistenceContext
-    private EntityManager em;
-    
+   
     @Autowired
-    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, UserRepo userRepo, OrderDetailRepo detailRepo) {
+    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, UserRepo userRepo, OrderDetailRepo detailRepo, EntityManager em) {
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
         this.userRepo = userRepo;
         this.detailRepo= detailRepo;
+        this.em=em;
     }
+    private EntityManager em;
     private OrderRepo orderRepo;
     private ProductRepo productRepo;
     private UserRepo userRepo;
