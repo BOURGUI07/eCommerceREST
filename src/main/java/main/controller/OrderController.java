@@ -5,6 +5,7 @@
 package main.controller;
 
 import java.util.List;
+import main.dto.OrderDTO;
 import main.dto.OrderDetailsDTO;
 import main.entity.Order;
 import main.entity.OrderDetails;
@@ -33,16 +34,18 @@ public class OrderController {
     private OrderService service;
     
     
-    @PostMapping("/orders/create/{userID}")
-    public Order createOrder(@PathVariable Integer userID, @RequestBody OrderDetailsDTO x){
-        if(userID<0){
-            throw new RessourceNotFoundException("Ressource not found");
-        }
-        return this.service.createOrder(userID, x);
+    @PostMapping("/orders/create")
+    public OrderDTO createOrder(@RequestBody OrderDTO x){   
+        return this.service.createOrder(x);
+    }
+    
+    @PostMapping("/details/create")
+    public OrderDetailsDTO createDetail(@RequestBody OrderDetailsDTO x){
+        return this.service.createDetail(x);
     }
     
     @GetMapping("/orders/{x}")
-    public Order getOrder(@PathVariable Integer x){
+    public OrderDTO getOrder(@PathVariable Integer x){
         if(x<0){
             throw new RessourceNotFoundException("Ressource not found");
         }
@@ -50,7 +53,7 @@ public class OrderController {
     }
     
     @GetMapping("/details/{orderID}/{productID}")
-    public OrderDetails getOrderDetail(@PathVariable Integer orderID, @PathVariable Integer productID){
+    public OrderDetailsDTO getOrderDetail(@PathVariable Integer orderID, @PathVariable Integer productID){
         if(orderID<0 || productID<0){
             throw new RessourceNotFoundException("Ressource not found");
         }
@@ -58,12 +61,12 @@ public class OrderController {
     }
     
     @GetMapping("/orders")
-    public List<Order> getOrders(){
+    public List<OrderDTO> getOrders(){
         return this.service.getAllOrders();
     }
     
     @GetMapping("/details")
-    public List<OrderDetails> getOrderDetails(){
+    public List<OrderDetailsDTO> getOrderDetails(){
         return this.service.getAllOrderDetails();
     }
     

@@ -9,11 +9,15 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import main.dto.OrderDTO;
 import main.dto.OrderDetailsDTO;
 import main.entity.Order;
 import main.entity.OrderDetails;
 import main.entity.OrderDetailsId;
 import main.handler.RessourceNotFoundException;
+import main.mapper.DetailMapper;
+import main.mapper.OrderMapper;
 import main.repo.OrderDetailRepo;
 import main.repo.OrderRepo;
 import main.repo.ProductRepo;
@@ -27,56 +31,57 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrderService {
-   
     @Autowired
-    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, UserRepo userRepo, OrderDetailRepo detailRepo, EntityManager em) {
+    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, UserRepo userRepo, OrderDetailRepo detailRepo, DetailMapper detailMapper, OrderMapper orderMapper) {
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
         this.userRepo = userRepo;
-        this.detailRepo= detailRepo;
-        this.em=em;
+        this.detailRepo = detailRepo;
+        this.detailMapper = detailMapper;
+        this.orderMapper = orderMapper;
     }
+  
+    @PersistenceContext
     private EntityManager em;
     private OrderRepo orderRepo;
     private ProductRepo productRepo;
     private UserRepo userRepo;
     private OrderDetailRepo detailRepo;
+    private DetailMapper detailMapper;
+    private OrderMapper orderMapper;
     
-    public Order findOrderById(Integer id){
-        return this.orderRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Order with id: " + id + " wasn't found"));
+    public OrderDTO findOrderById(Integer id){
+        var o = this.orderRepo.findById(id).orElse(null);
+        return this.orderMapper.toDTO(o);
     }
     
-    public List<Order> getAllOrders(){
-        return this.orderRepo.findAll();
+    public List<OrderDTO> getAllOrders(){
+        return this.orderRepo.findAll().stream().map(o -> this.orderMapper.toDTO(o)).collect(Collectors.toList());
     }
     
-    public List<OrderDetails> getAllOrderDetails(){
-        return this.detailRepo.findAll();
+    public List<OrderDetailsDTO> getAllOrderDetails(){
+        return this.detailRepo.findAll().stream().map(o -> this.detailMapper.toDTO(o)).collect(Collectors.toList());
     }
     
-    public OrderDetails getDetail(Integer orderID, Integer productID){
-        return this.detailRepo.findById(new OrderDetailsId(orderID,productID)).orElseThrow(() -> new RessourceNotFoundException("Detail with ids: " + productID + ", " + orderID + " wasn't found"));
+    public OrderDetailsDTO getDetail(Integer orderID, Integer productID){
+        var d=  this.detailRepo.findById(new OrderDetailsId(orderID,productID)).orElse(null);
+        return this.detailMapper.toDTO(d);
     }
     
     @Transactional
-    public Order createOrder(Integer userID, OrderDetailsDTO x){
-        var order = new Order();
-        var user = this.userRepo.findById(userID).orElseThrow(() -> new RessourceNotFoundException("User with id: " + userID + " wasn't found"));
-        user.add(order);
-        var detail = new OrderDetails();
-        detail.setOrder(order);
-        var product = this.productRepo.findById(x.getProductId()).orElseThrow(() -> new RessourceNotFoundException("Product with id: OrderDetailsDTO.getProductId() wasn't found"));
-        detail.setProduct(product);
-        detail.setId(new OrderDetailsId(order.getId(), product.getId()));
-        product.addOrderDetail(detail);
-        detail.setQuantity(x.getQuantity());
-        order.addOrderDetail(detail);
-        this.detailRepo.save(detail);
-        return this.orderRepo.save(order);
+    public OrderDetailsDTO createDetail(OrderDetailsDTO x){
+        var d = this.detailMapper.toDetail(x);
+        var savedDetail = this.detailRepo.save(d);
+        return this.detailMapper.toDTO(savedDetail); 
     }
     
-    
-    
+    @Transactional
+    public OrderDTO createOrder(OrderDTO x){
+        var o = this.orderMapper.toOrder(x);
+        var savedOrder = this.orderRepo.save(o);
+        return this.orderMapper.toDTO(savedOrder);
+    }
+   
     @Transactional
     public void removeOrder(Integer orderID){
         var order = this.orderRepo.findById(orderID).orElseThrow(() -> new RessourceNotFoundException("Order with id: " + orderID + " wasn't found"));

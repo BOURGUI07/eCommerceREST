@@ -4,17 +4,19 @@
  */
 package main.dto;
 
+import main.entity.OrderDetailsId;
+
 /**
  *
  * @author hp
  */
 public class OrderDetailsDTO {
 
-    public Integer getId() {
+    public OrderDetailsId getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(OrderDetailsId id) {
         this.id = id;
     }
 
@@ -44,7 +46,7 @@ public class OrderDetailsDTO {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    private Integer id;
+    private OrderDetailsId id;
     private Integer orderId;
     private Integer productId;
     private int quantity;
