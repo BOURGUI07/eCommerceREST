@@ -4,6 +4,7 @@
  */
 package main.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +53,9 @@ public class UserDTO {
     private List<Integer> ordersId;
     
     public void addOrderID(Integer orderID){
+        if(this.ordersId==null){
+            this.ordersId = new ArrayList<>();
+        }
         this.ordersId.add(orderID);
     }
 }

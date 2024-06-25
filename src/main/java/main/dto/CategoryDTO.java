@@ -4,6 +4,7 @@
  */
 package main.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +46,13 @@ public class CategoryDTO {
     }
 
     public CategoryDTO() {
+    }
+    
+    public void addProductID(Integer id){
+        if(this.productsId==null){
+            this.productsId=  new ArrayList();
+        }
+        this.productsId.add(id);
     }
     private Integer id;
     private String name;

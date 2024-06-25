@@ -4,7 +4,9 @@
  */
 package main.dto;
 
+import java.util.ArrayList;
 import java.util.List;
+import main.entity.OrderDetailsId;
 
 /**
  *
@@ -12,11 +14,11 @@ import java.util.List;
  */
 public class ProductDTO {
 
-    public List<Integer> getOrdersId() {
+    public List<OrderDetailsId> getOrdersId() {
         return orderDetailIds;
     }
 
-    public void setOrdersId(List<Integer> ordersId) {
+    public void setOrdersId(List<OrderDetailsId> ordersId) {
         this.orderDetailIds = ordersId;
     }
 
@@ -76,5 +78,12 @@ public class ProductDTO {
     private double price;
     private int stock;
     private Integer categoryId;
-    private List<Integer> orderDetailIds;
+    private List<OrderDetailsId> orderDetailIds;
+    
+    public void addorderDetailId(OrderDetailsId id){
+        if(this.orderDetailIds==null){
+            this.orderDetailIds = new ArrayList<>();
+        }
+        this.orderDetailIds.add(id);
+    }
 }

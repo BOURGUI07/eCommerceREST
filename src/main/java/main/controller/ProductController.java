@@ -35,12 +35,12 @@ public class ProductController {
     private ProductService service;
     
     @GetMapping("/categories")
-    public List<Category> getAllCategories(){
+    public List<CategoryDTO> getAllCategories(){
         return this.service.getAllCategories();
     }
     
     @GetMapping("/products")
-    public List<Product> getAllProducts(){
+    public List<ProductDTO> getAllProducts(){
         return this.service.getAllProducts();
     }
     

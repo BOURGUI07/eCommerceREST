@@ -8,11 +8,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 import main.dto.CategoryDTO;
 import main.dto.ProductDTO;
 import main.entity.Category;
 import main.entity.Product;
 import main.handler.RessourceNotFoundException;
+import main.mapper.CategoryMapper;
+import main.mapper.ProductMapper;
 import main.repo.CategoryRepo;
 import main.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,72 +27,54 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ProductService {
+    @PersistenceContext
     private EntityManager em;
     
+ 
+    
     @Autowired
-    public ProductService(CategoryRepo categoryRepo, ProductRepo productRepo, EntityManager em) {
+    public ProductService(CategoryRepo categoryRepo, ProductRepo productRepo, ProductMapper pm, CategoryMapper cm) {
         this.categoryRepo = categoryRepo;
         this.productRepo = productRepo;
-        this.em=em;
+        this.categMapper=cm;
+        this.productMapper=pm;
     }
     private CategoryRepo categoryRepo;
     private ProductRepo productRepo;
+    private ProductMapper productMapper;
+    private CategoryMapper categMapper;
     
     @Transactional
     public CategoryDTO createCategory(CategoryDTO x){
-        var category = new Category();
-        category.setDesc(x.getDesc());
-        category.setName(x.getName());
-        for(Integer id:x.getProductsId()){
-            category.add(this.productRepo.findById(id).orElseThrow());
-        }
-        x.setId(category.getId());
-        this.categoryRepo.save(category);
-        return x;
+        var c = this.categMapper.toCategory(x);
+        var savedCategory = this.categoryRepo.save(c);
+        return this.categMapper.toDTO(savedCategory);
     }
     
     @Transactional
     public ProductDTO createProduct(ProductDTO x){
-        var product = new Product();
-        product.setDesc(x.getDesc());
-        product.setName(x.getName());
-        product.setPrice(x.getPrice());
-        product.setStock(x.getStock());
-        product.setCategory(this.categoryRepo.findById(x.getCategoryId()).orElseThrow(() -> new RessourceNotFoundException("Category with id:  ProductDTO.getCategoryId() wasn't found")));
-        this.productRepo.save(product);
-        x.setId(product.getId());
-        return x;
+        var p = this.productMapper.toProduct(x);
+        var savedProduct = this.productRepo.save(p);
+        return this.productMapper.toDTO(savedProduct);
+        
     }
     
     public CategoryDTO findCategory(Integer id){
-        var category = this.categoryRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Category with id: " + id + " wasn't found"));
-        var x = new CategoryDTO();
-        x.setId(category.getId());
-        x.setName(category.getName());
-        x.setDesc(category.getDesc());
-        for(Product p:category.getProducts()){
-            x.getProductsId().add(p.getId());
-        }
-        return x;
+        var c = this.categoryRepo.findById(id).orElse(null);
+        return this.categMapper.toDTO(c);
     }
     
     public ProductDTO findProduct(Integer id){
-        var p = this.productRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Product with id: " + id + " wasn't found"));
-        var pd = new ProductDTO();
-        pd.setCategoryId(p.getCategory().getId());
-        pd.setDesc(p.getDesc());
-        pd.setId(p.getId());
-        pd.setStock(p.getStock());
-        pd.setPrice(p.getPrice());
-        return pd;
+        var p = this.productRepo.findById(id).orElse(null);
+        return this.productMapper.toDTO(p);
     }
     
-    public List<Product> getAllProducts(){
-        return this.productRepo.findAll();
+    public List<ProductDTO> getAllProducts(){
+        return this.productRepo.findAll().stream().map(x -> this.productMapper.toDTO(x)).collect(Collectors.toList());
     }
     
-    public List<Category> getAllCategories(){
-        return this.categoryRepo.findAll();
+    public List<CategoryDTO> getAllCategories(){
+        return this.categoryRepo.findAll().stream().map(x -> this.categMapper.toDTO(x)).collect(Collectors.toList());
     }
     
     @Transactional
@@ -108,26 +93,26 @@ public class ProductService {
     
     @Transactional
     public ProductDTO updateProduct(Integer id, ProductDTO x){
-        var p = this.productRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Product with id: " + id + " wasn't found"));
-        p.setCategory(this.categoryRepo.findById(x.getCategoryId()).orElseThrow(() -> new RessourceNotFoundException("Category with id: ProductDTO.getCategoryId() wasn't found")));
+        var p = this.productRepo.findById(id).orElse(null);
+        p.setCategory(this.categoryRepo.findById(x.getCategoryId()).orElse(null));
         p.setDesc(x.getDesc());
         p.setName(x.getName());
         p.setPrice(x.getPrice());
         p.setStock(x.getStock());
-        this.productRepo.save(p);
-        return x;
+        var savedProduct = this.productRepo.save(p);
+        return this.productMapper.toDTO(savedProduct);
     }
     
     @Transactional
     public CategoryDTO updateCategory(Integer id, CategoryDTO x){
-        var categ = this.categoryRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Category with id: " + id + " wasn't found"));
+        var categ = this.categoryRepo.findById(id).orElse(null);
         categ.setDesc(x.getDesc());
         categ.setName(x.getName());
         for(Integer a:x.getProductsId()){
-            categ.add(this.productRepo.findById(a).orElseThrow());
+            categ.add(this.productRepo.findById(a).orElse(null));
         }
-        this.categoryRepo.save(categ);
-        return x;
+        var saved = this.categoryRepo.save(categ);
+        return this.categMapper.toDTO(saved);
     }
     
     //Find all products in a specific category

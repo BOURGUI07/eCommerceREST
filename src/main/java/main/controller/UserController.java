@@ -78,6 +78,11 @@ public class UserController {
         return this.service.updateUser(userID, x);
     }
     
+    @PutMapping("/profiles/update/{profileID}")
+    public ProfileDTO updateProfile(@PathVariable Integer profileID, @RequestBody ProfileDTO x){
+        return this.service.updateProfile(profileID, x);
+    }
+    
     @DeleteMapping("/users/delete/{x}")
     public void deleteUser(@PathVariable Integer x){
         if(x<0){

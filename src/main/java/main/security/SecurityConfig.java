@@ -96,6 +96,7 @@ VALUES
                 .requestMatchers(HttpMethod.GET, "/api/profiles/**").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/users/**").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/users/**").hasAnyRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/profiles/**").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/profiles/**").hasAnyRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/orders/**").hasAnyRole("ADMIN")

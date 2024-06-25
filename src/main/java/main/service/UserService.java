@@ -82,6 +82,16 @@ public class UserService {
        return this.userMapper.toDTO(savedUser);
    }
    
+   @Transactional
+   public ProfileDTO updateProfile(Integer id, ProfileDTO x){
+       var p = this.profileRepo.findById(id).orElse(null);
+       p.setAddress(x.getAddress());
+       p.setEmail(x.getEmail());
+       p.setPhone(x.getPhone());
+       var savedProfile = this.profileRepo.save(p);
+       return this.profileMapper.toDTO(savedProfile);
+   }
+   
    
    
    @Transactional
