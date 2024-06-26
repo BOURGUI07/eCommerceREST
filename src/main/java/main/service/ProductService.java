@@ -79,10 +79,13 @@ public class ProductService {
     
     @Transactional
     public void deleteCategory(Integer id){
-        var categ = this.categoryRepo.findById(id).orElseThrow(() -> new RessourceNotFoundException("Category with id: " + id + " wasn't found"));
-        for(Product p:categ.getProducts()){
-            p.setCategory(null);
+        var categ = this.categoryRepo.findById(id).orElse(null);
+        if(categ!=null && categ.getProducts()!=null){
+            for(Product p:categ.getProducts()){
+                p.setCategory(null);
+            }
         }
+        
         this.categoryRepo.delete(categ);      
     }
     
@@ -108,8 +111,10 @@ public class ProductService {
         var categ = this.categoryRepo.findById(id).orElse(null);
         categ.setDesc(x.getDesc());
         categ.setName(x.getName());
-        for(Integer a:x.getProductsId()){
-            categ.add(this.productRepo.findById(a).orElse(null));
+        if(x.getProductsId()!=null){
+            for(Integer a:x.getProductsId()){
+                categ.add(this.productRepo.findById(a).orElse(null));
+            }
         }
         var saved = this.categoryRepo.save(categ);
         return this.categMapper.toDTO(saved);

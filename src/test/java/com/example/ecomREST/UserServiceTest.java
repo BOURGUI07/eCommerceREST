@@ -159,6 +159,7 @@ public class UserServiceTest {
         
         var result = this.service.createUser(ux);
         assertEquals(ux, result);
+        assertNotNull(u.getProfile());
         verify(userMapper, times(1)).toUser(ux);
         verify(userRepo, times(1)).save(u);
         verify(userMapper, times(1)).toDTO(u);
