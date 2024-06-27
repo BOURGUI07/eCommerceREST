@@ -28,6 +28,7 @@ public class ProductMapper {
     
     public Product toProduct(ProductDTO x){
         var p = new Product();
+        p.setCreatedBy(x.getCreatedBy());
         p.setName(x.getName());
         p.setDesc(x.getDesc());
         p.setCategory(this.categRepo.findById(x.getCategoryId()).orElse(null));
@@ -40,6 +41,8 @@ public class ProductMapper {
     public ProductDTO toDTO(Product p ){
         var x = new ProductDTO();
         x.setCategoryId(p.getCategory().getId());
+        x.setCreatedAT(p.getCreatedAt());
+        x.setCreatedBy(p.getCreatedBy());
         x.setDesc(p.getDesc());
         x.setId(p.getId());
         x.setName(p.getName());

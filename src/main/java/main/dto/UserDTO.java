@@ -6,6 +6,7 @@ package main.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,23 @@ import java.util.List;
  * @author hp
  */
 public class UserDTO {
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAT() {
+        return createdAT;
+    }
+
+    public void setCreatedAT(LocalDateTime createdAT) {
+        this.createdAT = createdAT;
+    }
+    private String createdBy;
+    private LocalDateTime createdAT;
 
     public List<Integer> getOrdersId() {
         return ordersId;

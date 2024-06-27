@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import main.baseEntities.BaseEntity;
 
 /**
  *
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="product")
-public class Product {
+public class Product extends BaseEntity{
 
     public List<OrderDetails> getOrderDetails() {
         return orderDetails;

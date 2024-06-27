@@ -74,11 +74,13 @@ public class OrderServiceTest {
         o = new Order();
         o.setId(1);
         o.setUser(u);
+        o.setCreatedBy("youness");
         
         
         ox = new OrderDTO();
         ox.setId(1);
         ox.setUserId(1);
+        ox.setCreatedBy("youness");
         
         
         d = new OrderDetails();
@@ -86,6 +88,7 @@ public class OrderServiceTest {
         d.setOrder(o);
         d.setProduct(p);
         d.setQuantity(40);
+        d.setCreatedBy("youness");
         
         
         dx = new OrderDetailsDTO();
@@ -93,6 +96,7 @@ public class OrderServiceTest {
         dx.setOrderId(1);
         dx.setProductId(1);
         dx.setQuantity(40);
+        dx.setCreatedBy("youness");
         
         o.addOrderDetail(d);
         ox.addOrderDetailID(y);

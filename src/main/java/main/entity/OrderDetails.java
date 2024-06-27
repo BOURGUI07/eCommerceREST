@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import main.baseEntities.BaseEntity;
 
 /**
  *
@@ -17,7 +18,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name="orders_items")
-public class OrderDetails {
+public class OrderDetails extends BaseEntity{
 
     public OrderDetailsId getId() {
         return id;

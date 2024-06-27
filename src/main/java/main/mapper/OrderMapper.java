@@ -28,6 +28,7 @@ public class OrderMapper {
     
     public Order toOrder(OrderDTO x){
         var o = new Order();
+        o.setCreatedBy(x.getCreatedBy());
         o.setUser(this.userRepo.findById(x.getUserId()).orElse(null));
         o.setOrderdetails(this.detailRepo.findAllById(x.getDetailIDs()));
         return o;
@@ -35,6 +36,8 @@ public class OrderMapper {
     
     public OrderDTO toDTO(Order o){
         var x = new OrderDTO();
+        x.setCreatedAT(o.getCreatedAt());
+        x.setCreatedBy(o.getCreatedBy());
         x.setId(o.getId());
         x.setUserId(o.getUser().getId());
         for(var detail:o.getOrderdetails()){

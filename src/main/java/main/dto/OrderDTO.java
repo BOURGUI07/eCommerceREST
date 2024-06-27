@@ -4,6 +4,7 @@
  */
 package main.dto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import main.entity.OrderDetailsId;
@@ -13,6 +14,23 @@ import main.entity.OrderDetailsId;
  * @author hp
  */
 public class OrderDTO {
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAT() {
+        return createdAT;
+    }
+
+    public void setCreatedAT(LocalDateTime createdAT) {
+        this.createdAT = createdAT;
+    }
+    private String createdBy;
+    private LocalDateTime createdAT;
 
     public List<OrderDetailsId> getDetailIDs() {
         return orderDetailIds;

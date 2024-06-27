@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import main.baseEntities.BaseEntity;
 
 /**
  *
@@ -17,7 +18,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name="profile")
-public class Profile {
+public class Profile extends BaseEntity{
 
     public Integer getId() {
         return id;

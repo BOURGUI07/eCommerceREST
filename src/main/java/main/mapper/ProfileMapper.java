@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 public class ProfileMapper {
     public ProfileDTO toDTO(Profile p){
         var x = new ProfileDTO();
+        x.setCreatedAT(p.getCreatedAt());
+        x.setCreatedBy(p.getCreatedBy());
         x.setAddress(p.getAddress());
         x.setEmail(p.getEmail());
         x.setPhone(p.getPhone());
@@ -25,6 +27,7 @@ public class ProfileMapper {
     
     public Profile toProfile(ProfileDTO x){
         var p = new Profile();
+        p.setCreatedBy(x.getCreatedBy());
         p.setAddress(x.getAddress());
         p.setEmail(x.getEmail());
         p.setPhone(x.getPhone());

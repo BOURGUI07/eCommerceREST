@@ -28,6 +28,7 @@ public class CategoryMapper {
         var c = new Category();
         c.setName(x.getName());
         c.setDesc(x.getDesc());
+        c.setCreatedBy(x.getCreatedBy());
         c.setProducts(this.productRepo.findAllById(x.getProductsId()));
         return c;
     }
@@ -37,6 +38,8 @@ public class CategoryMapper {
         x.setId(c.getId());
         x.setName(c.getName());
         x.setDesc(c.getDesc());
+        x.setCreatedBy(c.getCreatedBy());
+        x.setCreatedAT(c.getCreatedAt());
         for(var p:c.getProducts()){
             x.addProductID(p.getId());
         }

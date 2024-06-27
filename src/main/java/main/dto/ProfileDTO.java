@@ -6,12 +6,30 @@ package main.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author hp
  */
 public class ProfileDTO {
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAT() {
+        return createdAT;
+    }
+
+    public void setCreatedAT(LocalDateTime createdAT) {
+        this.createdAT = createdAT;
+    }
+    private String createdBy;
+    private LocalDateTime createdAT;
 
     public Integer getId() {
         return id;

@@ -14,13 +14,14 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import main.baseEntities.BaseEntity;
 /**
  *
  * @author hp
  */
 @Entity
 @Table(name="orders")
-public class Order {
+public class Order extends BaseEntity{
 
     public List<OrderDetails> getOrderdetails() {
         return orderdetails;

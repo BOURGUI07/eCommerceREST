@@ -28,6 +28,8 @@ public class UserMapper {
     
     public UserDTO toDTO(User user){
         var x = new UserDTO();
+        x.setCreatedAT(user.getCreatedAt());
+        x.setCreatedBy(user.getCreatedBy());
         x.setId(user.getId());
         x.setName(user.getName());
         x.setProfileId(user.getProfile().getId());
@@ -39,6 +41,7 @@ public class UserMapper {
     
     public User toUser(UserDTO x){
         var user = new User();
+        user.setCreatedBy(x.getCreatedBy());
         user.setName(x.getName());
         user.setProfile(this.profileRepo.findById(x.getProfileId()).orElse(null));
         user.setOrders(this.orderRep.findAllById(x.getOrdersId()));

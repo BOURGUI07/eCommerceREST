@@ -28,6 +28,7 @@ public class DetailMapper {
     public OrderDetails toDetail(OrderDetailsDTO x){
         var d = new OrderDetails();
         d.setQuantity(x.getQuantity());
+        d.setCreatedBy(x.getCreatedBy());
         d.setOrder(this.orderRepo.findById(x.getOrderId()).orElse(null));
         d.setProduct(this.productRepo.findById(x.getProductId()).orElse(null));
         return d;
@@ -36,6 +37,8 @@ public class DetailMapper {
     public OrderDetailsDTO toDTO(OrderDetails o){
         var x= new OrderDetailsDTO();
         x.setId(o.getId());
+        x.setCreatedAT(o.getCreatedAt());
+        x.setCreatedBy(o.getCreatedBy());
         x.setOrderId(o.getOrder().getId());
         x.setProductId(o.getProduct().getId());
         x.setQuantity(o.getQuantity());
