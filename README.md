@@ -17,38 +17,34 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
 #### Entities and Relationships
 
 1. **User**
-    - Attributes: `user_id`, `username`, `email`, `password`, `created_at`
+    - Attributes: `user_id`, `user_name`, `profile_id`
     - Relationships: 
         - One-to-One with `UserProfile`
-        - One-to-Many with `Order`
+        - One-to-Many with `Order_Items`
 
 2. **UserProfile**
-    - Attributes: `profile_id`, `first_name`, `last_name`, `address`, `phone_number`, `user_id`
+    - Attributes: `profile_id`, `email`, `address`, `phone_number`
     - Relationships: 
         - One-to-One with `User`
 
 3. **Product**
-    - Attributes: `product_id`, `name`, `description`, `price`, `stock`, `created_at`
+    - Attributes: `product_id`, `name`, `description`, `price`, `stock`, `category_id`
     - Relationships:
-        - Many-to-Many with `Category` (through `ProductCategory`)
+        - Many-to-One with `Category` 
 
 4. **Category**
     - Attributes: `category_id`, `name`, `description`
     - Relationships:
-        - Many-to-Many with `Product` (through `ProductCategory`)
+        - One-to-Many with `Product`
 
-5. **ProductCategory**
-    - Attributes: `product_id`, `category_id`
-    - Relationships:
-        - Many-to-Many between `Product` and `Category`
 
-6. **Order**
+5. **Order**
     - Attributes: `order_id`, `user_id`, `order_date`, `status`
     - Relationships:
         - One-to-Many with `OrderItem`
         - Many-to-One with `User`
 
-7. **OrderItem**
+6. **OrderItem**
     - Attributes: `order_item_id`, `order_id`, `product_id`, `quantity`, `price`
     - Relationships:
         - Many-to-One with `Order`
