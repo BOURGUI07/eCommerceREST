@@ -84,13 +84,14 @@ public class OrderService {
    
     @Transactional
     public void removeOrder(Integer orderID){
-        var order = this.orderRepo.findById(orderID).orElseThrow(() -> new RessourceNotFoundException("Order with id: " + orderID + " wasn't found"));
-        for(var d:order.getOrderdetails()){
-            order.removeOrderDetail(d);          
-            this.detailRepo.delete(d);
+        var order = this.orderRepo.findById(orderID).orElse(null);
+        
+        if(order!=null && !order.getOrderdetails().isEmpty()){
+            for(var d:order.getOrderdetails()){
+                order.removeOrderDetail(d);          
+                this.detailRepo.delete(d);
+            }
         }
-        var user = order.getUser();
-        user.removeOrder(order);
         this.orderRepo.delete(order);
     }
     
