@@ -1,3 +1,6 @@
+Here's the updated `README.md` description for your project, incorporating the latest additions:
+
+```markdown
 ### User Requirement Story
 
 #### Overview
@@ -17,35 +20,34 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
 #### Entities and Relationships
 
 1. **User**
-    - Attributes: `user_id`, `user_name`, `profile_id`
+    - Attributes: `user_id`, `user_name`, `profile_id`, `createdBy`, `createdAt`
     - Relationships: 
         - One-to-One with `UserProfile`
         - One-to-Many with `Order_Items`
 
 2. **UserProfile**
-    - Attributes: `profile_id`, `email`, `address`, `phone_number`
+    - Attributes: `profile_id`, `email`, `address`, `phone_number`, `createdBy`, `createdAt`
     - Relationships: 
         - One-to-One with `User`
 
 3. **Product**
-    - Attributes: `product_id`, `name`, `description`, `price`, `stock`, `category_id`
+    - Attributes: `product_id`, `name`, `description`, `price`, `stock`, `category_id`, `createdBy`, `createdAt`
     - Relationships:
         - Many-to-One with `Category` 
 
 4. **Category**
-    - Attributes: `category_id`, `name`, `description`
+    - Attributes: `category_id`, `name`, `description`, `createdBy`, `createdAt`
     - Relationships:
         - One-to-Many with `Product`
 
-
 5. **Order**
-    - Attributes: `order_id`, `user_id`, `order_date`, `status`
+    - Attributes: `order_id`, `user_id`, `order_date`, `status`, `createdBy`, `createdAt`
     - Relationships:
         - One-to-Many with `OrderItem`
         - Many-to-One with `User`
 
 6. **OrderItem**
-    - Attributes: `order_item_id`, `order_id`, `product_id`, `quantity`, `price`
+    - Attributes: `order_item_id`, `order_id`, `product_id`, `quantity`, `price`, `createdBy`, `createdAt`
     - Relationships:
         - Many-to-One with `Order`
         - Many-to-One with `Product`
@@ -60,6 +62,7 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
 2. **Product Management**
     - Create, update, delete, and retrieve product information.
     - Retrieve products based on complex filters (e.g., products in certain categories, products within a price range, products with low stock).
+    - Implement pagination and sorting in endpoints.
 
 3. **Category Management**
     - Create, update, delete, and retrieve category information.
@@ -69,6 +72,7 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
     - Create, update, delete, and retrieve order information.
     - Retrieve orders with detailed information (including order items and user details).
     - Retrieve orders based on complex filters (e.g., orders by status, orders within a date range, orders containing specific products).
+    - Implement pagination and sorting in endpoints.
 
 5. **Advanced Queries**
     - Retrieve users who have spent more than a specified amount in a given time period.
@@ -77,7 +81,7 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
     - Generate reports on sales (total sales by product, total sales by category, total sales by user).
 
 6. **Authentication and Authorization**
-    - Implement user authentication.
+    - Implement user authentication using JWT.
     - Ensure certain endpoints are protected and require appropriate user roles/permissions.
 
 7. **Performance and Scalability**
@@ -166,3 +170,6 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
 - **Endpoint Protection**: Ensure that endpoints are protected using Spring Security to enforce role-based access control.
 - **Token-Based Authentication**: Implement JWT (JSON Web Token) for secure and stateless authentication.
 - **Role Hierarchies**: Consider defining role hierarchies in Spring Security to simplify the assignment of authorities (e.g., `Admin` implicitly has all authorities granted to `Vendor`).
+```
+
+This should reflect the latest updates regarding entity base attributes, validation of fields, and pagination and sorting in REST endpoints. Adjust as necessary based on specific details or additional functionalities implemented.
