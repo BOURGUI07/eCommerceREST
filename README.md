@@ -172,4 +172,3 @@ As a client, I require a RESTful service for managing an e-commerce platform. Th
 - **Role Hierarchies**: Consider defining role hierarchies in Spring Security to simplify the assignment of authorities (e.g., `Admin` implicitly has all authorities granted to `Vendor`).
 ```
 
-This should reflect the latest updates regarding entity base attributes, validation of fields, and pagination and sorting in REST endpoints. Adjust as necessary based on specific details or additional functionalities implemented.
