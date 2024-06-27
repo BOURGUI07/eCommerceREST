@@ -4,6 +4,8 @@
  */
 package main.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +57,8 @@ public class CategoryDTO {
         this.productsId.add(id);
     }
     private Integer id;
+    @NotBlank(message= "Category Name is Mandatory")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
     private String desc;
     private List<Integer> productsId;

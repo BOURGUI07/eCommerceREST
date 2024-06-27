@@ -4,6 +4,9 @@
  */
 package main.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 /**
  *
  * @author hp
@@ -46,6 +49,8 @@ public class ProfileDTO {
     }
     private Integer id;
     private String address;
+    @NotBlank(message = "email is mandatory")
+    @Email(message="Email Must be Valid")
     private String email;
     private String phone;
 }

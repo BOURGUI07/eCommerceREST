@@ -4,6 +4,9 @@
  */
 package com.example.ecomREST;
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.util.Arrays;
 import java.util.Optional;
 import main.dto.ProfileDTO;
@@ -53,23 +56,24 @@ public class UserServiceTest {
     private Profile p;
     private  ProfileDTO px;
     private ProfileDTO px2;
+    private Validator validator;
     
     public UserServiceTest() {
         p = new Profile();
         p.setAddress("address");
-        p.setEmail("email");
+        p.setEmail("younessbourgui07@gmail.com");
         p.setId(1);
         p.setPhone("0606");
         
         px = new ProfileDTO();
         px.setAddress("address");
-        px.setEmail("email");
+        px.setEmail("younessbourgui07@gmail.com");
         px.setId(1);
         px.setPhone("0606");
         
         px2 = new ProfileDTO();
         px2.setAddress("add");
-        px2.setEmail("emai");
+        px2.setEmail("younessbourgui07@gmail.com");
         px2.setId(1);
         px2.setPhone("0707");
         
@@ -101,6 +105,8 @@ public class UserServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+        service.validator = validator;
     }
     
     @AfterEach
@@ -198,6 +204,24 @@ public class UserServiceTest {
         when(userMapper.toDTO(u)).thenReturn(ux);
         var size = this.service.getAllUsers().size();
         assertEquals(1,size);
+    }
+    
+    @Test
+    public void testProfileEmailValidation(){
+        var profile = new ProfileDTO();
+        profile.setEmail("email");
+        assertThrows(ConstraintViolationException.class, () -> {
+            service.createProfile(profile);
+        });
+    }
+    
+    @Test
+    public void testUserNameValidation(){
+        var user = new UserDTO();
+        user.setName("");
+        assertThrows(ConstraintViolationException.class, () -> {
+            service.createUser(user);
+        });
     }
 
     // TODO add test methods here.

@@ -7,7 +7,11 @@ package main.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import main.dto.CategoryDTO;
 import main.dto.ProductDTO;
@@ -39,13 +43,22 @@ public class ProductService {
         this.categMapper=cm;
         this.productMapper=pm;
     }
+
+    public void setValidator(Validator validator) {
+        this.validator = validator;
+    }
     private CategoryRepo categoryRepo;
     private ProductRepo productRepo;
     private ProductMapper productMapper;
     private CategoryMapper categMapper;
+    private Validator validator;
     
     @Transactional
     public CategoryDTO createCategory(CategoryDTO x){
+        Set<ConstraintViolation<CategoryDTO>> violations = validator.validate(x);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
         var c = this.categMapper.toCategory(x);
         var savedCategory = this.categoryRepo.save(c);
         return this.categMapper.toDTO(savedCategory);
@@ -53,6 +66,10 @@ public class ProductService {
     
     @Transactional
     public ProductDTO createProduct(ProductDTO x){
+        Set<ConstraintViolation<ProductDTO>> violations = validator.validate(x);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
         var p = this.productMapper.toProduct(x);
         var savedProduct = this.productRepo.save(p);
         return this.productMapper.toDTO(savedProduct);

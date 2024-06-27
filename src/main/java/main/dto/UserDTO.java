@@ -4,6 +4,8 @@
  */
 package main.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,8 @@ public class UserDTO {
     public UserDTO() {
     }
     private Integer id;
+    @NotBlank(message= "Name is Mandatory")
+    @Size(min=2, max=50, message="Name must be between 2 and 50 characters")
     private String name;
     private Integer profileId;
     private List<Integer> ordersId;

@@ -4,6 +4,7 @@
  */
 package main.controller;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import main.dto.CategoryDTO;
 import main.dto.ProductDTO;
@@ -62,16 +63,16 @@ public class ProductController {
     
     
     @PostMapping("/categories/create")
-    public CategoryDTO createCateg(@RequestBody CategoryDTO x){
+    public CategoryDTO createCateg(@Valid @RequestBody CategoryDTO x){
         return this.service.createCategory(x);
     }
     
     @PostMapping("/products/create")
-    public ProductDTO createProduct(@RequestBody ProductDTO x){
+    public ProductDTO createProduct(@Valid @RequestBody ProductDTO x){
         return this.service.createProduct(x);
     }
     @PutMapping("/categories/update/{x}")
-    public CategoryDTO updateCateg(@PathVariable Integer x, @RequestBody CategoryDTO y){
+    public CategoryDTO updateCateg(@PathVariable Integer x,@Valid @RequestBody CategoryDTO y){
         if(x<0){
             throw new RessourceNotFoundException("Ressource not found");
         }
@@ -79,7 +80,7 @@ public class ProductController {
     }
     
     @PutMapping("/products/update/{x}")
-    public ProductDTO updateProduct(@PathVariable Integer x, @RequestBody ProductDTO y){
+    public ProductDTO updateProduct(@PathVariable Integer x,@Valid @RequestBody ProductDTO y){
         if(x<0){
             throw new RessourceNotFoundException("Ressource not found");
         }

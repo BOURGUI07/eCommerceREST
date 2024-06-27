@@ -7,7 +7,11 @@ package main.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import main.dto.ProfileDTO;
 import main.dto.UserDTO;
@@ -35,6 +39,7 @@ public class UserService {
    private OrderRepo orderRepo;
    private UserRepo userRepo;
    private ProfileRepo profileRepo;
+   public Validator validator;
    
    @PersistenceContext
    private EntityManager em;
@@ -50,6 +55,10 @@ public class UserService {
    
    @Transactional
    public UserDTO createUser(UserDTO x){
+       Set<ConstraintViolation<UserDTO>> violations = validator.validate(x);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
        var user = this.userMapper.toUser(x);
        var savedUser = this.userRepo.save(user);
        return this.userMapper.toDTO(savedUser);
@@ -57,6 +66,10 @@ public class UserService {
    
    @Transactional
    public ProfileDTO createProfile(ProfileDTO x){
+       Set<ConstraintViolation<ProfileDTO>> violations = validator.validate(x);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
        var profile = this.profileMapper.toProfile(x);
        var savedProfile = this.profileRepo.save(profile);
        return this.profileMapper.toDTO(savedProfile);

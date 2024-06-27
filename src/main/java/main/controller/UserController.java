@@ -4,6 +4,7 @@
  */
 package main.controller;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import main.dto.ProfileDTO;
 import main.dto.UserDTO;
@@ -35,12 +36,12 @@ public class UserController {
     private UserService service;
     
     @PostMapping("/users/create")
-    public UserDTO createUser(@RequestBody UserDTO x){
+    public UserDTO createUser(@Valid @RequestBody UserDTO x){
         return this.service.createUser(x);
     }
     
     @PostMapping("/profiles/create")
-    public ProfileDTO createProfile(@RequestBody ProfileDTO x){
+    public ProfileDTO createProfile(@Valid @RequestBody ProfileDTO x){
         return this.service.createProfile(x);
     }
     
@@ -71,7 +72,7 @@ public class UserController {
     }
     
     @PutMapping("/users/update/{userID}")
-    public UserDTO updateUser(@PathVariable Integer userID, @RequestBody UserDTO x){
+    public UserDTO updateUser(@PathVariable Integer userID,@Valid @RequestBody UserDTO x){
         if(userID<0){
             throw new RessourceNotFoundException("Ressource not found");
         }
@@ -79,7 +80,7 @@ public class UserController {
     }
     
     @PutMapping("/profiles/update/{profileID}")
-    public ProfileDTO updateProfile(@PathVariable Integer profileID, @RequestBody ProfileDTO x){
+    public ProfileDTO updateProfile(@PathVariable Integer profileID,@Valid @RequestBody ProfileDTO x){
         return this.service.updateProfile(profileID, x);
     }
     

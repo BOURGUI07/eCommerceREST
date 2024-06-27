@@ -4,6 +4,9 @@
  */
 package com.example.ecomREST;
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.util.Arrays;
 import java.util.Optional;
 import main.dto.CategoryDTO;
@@ -52,6 +55,8 @@ public class ProductServiceTest {
     private CategoryDTO cx2;
     private ProductDTO px;
     
+    private Validator validator;
+    
     public ProductServiceTest() {
         c = new Category();
         c.setName("clothes");
@@ -95,6 +100,8 @@ public class ProductServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+        service.setValidator(validator);
     }
     
     @AfterEach
@@ -197,6 +204,24 @@ public class ProductServiceTest {
         doNothing().when(productRepo).deleteById(1);
         service.deleteProduct(1);
         verify(productRepo, times(1)).deleteById(1);
+    }
+    
+    @Test
+    public void testProductName(){
+        var product = new ProductDTO();
+        product.setName("");
+        assertThrows(ConstraintViolationException.class, () -> {
+            service.createProduct(product);
+        });
+    }
+    
+    @Test
+    public void testCategortyName(){
+        var categ = new CategoryDTO();
+        categ.setName("");
+        assertThrows(ConstraintViolationException.class, () -> {
+            service.createCategory(categ);
+        });
     }
    
 }
